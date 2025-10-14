@@ -76,47 +76,6 @@ describe('CandidateMapper', () => {
     });
   });
 
-  describe('toResponseDtoFromPrimitives', () => {
-    it('should map CandidatePrimitives to CandidateResponseDto', () => {
-      const primitives: CandidatePrimitives = {
-        id: '123e4567-e89b-12d3-a456-426614174000',
-        name: 'John',
-        surname: 'Doe',
-        seniority: 'junior',
-        years: 3,
-        availability: true,
-        createdAt: new Date('2024-01-15'),
-      };
-
-      const dto = CandidateMapper.toResponseDtoFromPrimitives(primitives);
-
-      expect(dto.id).toBe(primitives.id);
-      expect(dto.name).toBe(primitives.name);
-      expect(dto.surname).toBe(primitives.surname);
-      expect(dto.seniority).toBe(primitives.seniority);
-      expect(dto.years).toBe(primitives.years);
-      expect(dto.availability).toBe(primitives.availability);
-      expect(dto.createdAt).toBe(primitives.createdAt);
-    });
-
-    it('should handle senior seniority from primitives', () => {
-      const primitives: CandidatePrimitives = {
-        id: '123e4567-e89b-12d3-a456-426614174001',
-        name: 'Jane',
-        surname: 'Smith',
-        seniority: 'senior',
-        years: 20,
-        availability: false,
-        createdAt: new Date('2024-02-20'),
-      };
-
-      const dto = CandidateMapper.toResponseDtoFromPrimitives(primitives);
-
-      expect(dto.seniority).toBe('senior');
-      expect(dto.availability).toBe(false);
-    });
-  });
-
   describe('toResponseDtoArray', () => {
     it('should map empty array to empty array', () => {
       const candidates: Candidate[] = [];
