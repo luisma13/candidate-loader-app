@@ -1,4 +1,4 @@
-import { Candidate } from './candidate.entity';
+import { Candidate, CandidatePrimitives } from './candidate.entity';
 import { Seniority } from '../value-objects/seniority.vo';
 import { YearsExperience } from '../value-objects/years-experience.vo';
 import { InvalidCandidateException } from '../exceptions/invalid-candidate.exception';
@@ -186,6 +186,81 @@ describe('Candidate Entity', () => {
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
       expect(candidate.id).toMatch(uuidRegex);
+    });
+  });
+
+  describe('fromPrimitives', () => {
+    it('should create candidate from primitives with preserved ID and date', () => {
+      const primitives: CandidatePrimitives = {
+        id: '123e4567-e89b-12d3-a456-426614174000',
+        name: 'Carlos',
+        surname: 'García',
+        seniority: 'junior',
+        years: 3,
+        availability: true,
+        createdAt: new Date('2024-01-15T10:00:00Z'),
+      };
+
+      const candidate = Candidate.fromPrimitives(primitives);
+
+      expect(candidate).toBeInstanceOf(Candidate);
+      expect(candidate.id).toBe('123e4567-e89b-12d3-a456-426614174000');
+      expect(candidate.name).toBe('Carlos');
+      expect(candidate.surname).toBe('García');
+      expect(candidate.seniority).toBe('junior');
+      expect(candidate.years).toBe(3);
+      expect(candidate.availability).toBe(true);
+      expect(candidate.createdAt).toEqual(new Date('2024-01-15T10:00:00Z'));
+    });
+
+    it('should create senior candidate from primitives', () => {
+      const primitives: CandidatePrimitives = {
+        id: 'test-id-123',
+        name: 'María',
+        surname: 'López',
+        seniority: 'senior',
+        years: 10,
+        availability: false,
+        createdAt: new Date('2024-02-20T15:30:00Z'),
+      };
+
+      const candidate = Candidate.fromPrimitives(primitives);
+
+      expect(candidate.seniority).toBe('senior');
+      expect(candidate.years).toBe(10);
+      expect(candidate.availability).toBe(false);
+    });
+
+    it('should throw InvalidSeniorityException for invalid seniority in primitives', () => {
+      const primitives: CandidatePrimitives = {
+        id: 'test-id',
+        name: 'Test',
+        surname: 'User',
+        seniority: 'intermediate' as any,
+        years: 5,
+        availability: true,
+        createdAt: new Date(),
+      };
+
+      expect(() => {
+        Candidate.fromPrimitives(primitives);
+      }).toThrow();
+    });
+
+    it('should throw InvalidYearsException for negative years in primitives', () => {
+      const primitives: CandidatePrimitives = {
+        id: 'test-id',
+        name: 'Test',
+        surname: 'User',
+        seniority: 'junior',
+        years: -1,
+        availability: true,
+        createdAt: new Date(),
+      };
+
+      expect(() => {
+        Candidate.fromPrimitives(primitives);
+      }).toThrow();
     });
   });
 });

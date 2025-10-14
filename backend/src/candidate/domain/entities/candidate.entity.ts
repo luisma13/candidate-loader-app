@@ -56,6 +56,21 @@ export class Candidate {
     return new Candidate(id, name, surname, seniorityVO, yearsVO, availability, createdAt);
   }
 
+  static fromPrimitives(primitives: CandidatePrimitives): Candidate {
+    const seniorityVO = Seniority.create(primitives.seniority);
+    const yearsVO = YearsExperience.create(primitives.years);
+
+    return new Candidate(
+      primitives.id,
+      primitives.name,
+      primitives.surname,
+      seniorityVO,
+      yearsVO,
+      primitives.availability,
+      primitives.createdAt,
+    );
+  }
+
   get id(): string {
     return this._id;
   }
