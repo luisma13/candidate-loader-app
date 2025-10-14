@@ -1,0 +1,151 @@
+{
+	"info": {
+		"name": "Candidate Loader API",
+		"description": "API for loading and managing candidates with Excel upload",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Candidate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Carlos",
+							"type": "text"
+						},
+						{
+							"key": "surname",
+							"value": "García",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/path/to/your/candidate.xlsx",
+							"description": "Excel file with columns: seniority (junior|senior), years (number), availability (boolean)"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/candidates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"candidates"
+					]
+				},
+				"description": "Creates a new candidate by uploading name, surname and an Excel file with one row containing: seniority, years, and availability columns."
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Candidates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/candidates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"candidates"
+					]
+				},
+				"description": "Retrieves all stored candidates ordered by creation date (newest first)."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Candidate - Junior",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "María",
+							"type": "text"
+						},
+						{
+							"key": "surname",
+							"value": "López",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/path/to/your/candidate-junior.xlsx"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/candidates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"candidates"
+					]
+				},
+				"description": "Example: Create junior candidate"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Candidate - Senior",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Pedro",
+							"type": "text"
+						},
+						{
+							"key": "surname",
+							"value": "Martínez",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/path/to/your/candidate-senior.xlsx"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/candidates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"candidates"
+					]
+				},
+				"description": "Example: Create senior candidate"
+			},
+			"response": []
+		}
+	]
+}
+
