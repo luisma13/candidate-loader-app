@@ -1,3 +1,3 @@
-export { ICandidateRepository } from './candidate-repository.interface';
-export { IExcelParserService, type ExcelRowData } from './excel-parser.interface';
+export type { ICandidateRepository } from './candidate-repository.interface';
+export type { IExcelParserService, ExcelRowData } from './excel-parser.interface';
 
