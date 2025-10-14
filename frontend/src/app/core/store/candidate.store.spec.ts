@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { CandidateStore } from './candidate.store';
 import { CandidateService } from '../services';
@@ -165,6 +166,44 @@ describe('CandidateStore', () => {
       expect(store.candidates()).toEqual([]);
       expect(store.loading()).toBe(false);
       expect(store.error()).toBe('Validation error');
+    });
+
+    it('should extract error message from HttpErrorResponse with message', async () => {
+      const request = {
+        name: 'Test',
+        surname: 'User',
+        file: new File(['test'], 'test.xlsx')
+      };
+      const httpError = new HttpErrorResponse({
+        error: { message: 'Missing required column(s): seniority' },
+        status: 400,
+        statusText: 'Bad Request'
+      });
+      candidateService.create.and.returnValue(throwError(() => httpError));
+
+      const result = await store.createCandidate(request);
+
+      expect(result).toBeNull();
+      expect(store.error()).toBe('Missing required column(s): seniority');
+    });
+
+    it('should extract error message from HttpErrorResponse with string error', async () => {
+      const request = {
+        name: 'Test',
+        surname: 'User',
+        file: new File(['test'], 'test.xlsx')
+      };
+      const httpError = new HttpErrorResponse({
+        error: 'Invalid file format',
+        status: 400,
+        statusText: 'Bad Request'
+      });
+      candidateService.create.and.returnValue(throwError(() => httpError));
+
+      const result = await store.createCandidate(request);
+
+      expect(result).toBeNull();
+      expect(store.error()).toBe('Invalid file format');
     });
 
     it('should handle unknown errors when creating', async () => {

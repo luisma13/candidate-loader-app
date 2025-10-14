@@ -1,0 +1,92 @@
+.candidate-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.form-title {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.candidate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-upload-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  height: 48px;
+}
+
+.selected-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border-left: 4px solid #1976d2;
+
+  .file-icon {
+    color: #1976d2;
+  }
+
+  .file-name {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: 500;
+  }
+}
+
+.file-error {
+  color: #f44336;
+  font-size: 12px;
+  padding: 0 16px;
+}
+
+.form-actions {
+  margin-top: 8px;
+}
+
+.submit-button {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+
+  mat-spinner {
+    margin-right: 8px;
+  }
+}
+
+// Responsive
+@media (max-width: 600px) {
+  .candidate-form-container {
+    padding: 16px;
+  }
+
+  .form-title {
+    font-size: 20px;
+  }
+}
+

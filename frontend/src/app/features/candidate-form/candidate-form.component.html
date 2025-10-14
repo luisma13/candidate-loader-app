@@ -1,0 +1,91 @@
+<div class="candidate-form-container">
+  <h2 class="form-title">Add New Candidate</h2>
+
+  <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()" class="candidate-form">
+    <!-- Name Field -->
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input 
+        matInput 
+        formControlName="name" 
+        placeholder="Enter candidate's name"
+      />
+      <mat-icon matPrefix>person</mat-icon>
+      @if (candidateForm.get('name')?.invalid && candidateForm.get('name')?.touched) {
+        <mat-error>{{ getErrorMessage('name') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Surname Field -->
+    <mat-form-field appearance="outline">
+      <mat-label>Surname</mat-label>
+      <input 
+        matInput 
+        formControlName="surname" 
+        placeholder="Enter candidate's surname"
+      />
+      <mat-icon matPrefix>badge</mat-icon>
+      @if (candidateForm.get('surname')?.invalid && candidateForm.get('surname')?.touched) {
+        <mat-error>{{ getErrorMessage('surname') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- File Upload Field -->
+    <div class="file-upload-container">
+      <input
+        type="file"
+        #fileInput
+        accept=".xlsx,.xls"
+        (change)="onFileSelected($event)"
+        [disabled]="loading()"
+        hidden
+      />
+      
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="fileInput.click()"
+        [disabled]="loading()"
+        class="file-upload-button"
+      >
+        <mat-icon>upload_file</mat-icon>
+        Choose Excel File
+      </button>
+
+      @if (selectedFileName()) {
+        <div class="selected-file">
+          <mat-icon class="file-icon">description</mat-icon>
+          <span class="file-name">{{ selectedFileName() }}</span>
+        </div>
+      }
+
+      @if (candidateForm.get('file')?.invalid && candidateForm.get('file')?.touched) {
+        <div class="file-error">
+          Excel file is required
+        </div>
+      }
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="loading()"
+        class="submit-button"
+      >
+        @if (loading()) {
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Creating...</span>
+        } @else {
+          <ng-container>
+            <mat-icon>add</mat-icon>
+            <span>Add Candidate</span>
+          </ng-container>
+        }
+      </button>
+    </div>
+  </form>
+</div>
+

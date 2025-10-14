@@ -1,4 +1,5 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Candidate, CreateCandidateRequest } from '../models';
 import { CandidateService } from '../services';
@@ -40,7 +41,7 @@ export class CandidateStore {
     } catch (error) {
       this.updateState({
         loading: false,
-        error: error instanceof Error ? error.message : 'Failed to load candidates'
+        error: this.extractErrorMessage(error, 'Failed to load candidates')
       });
     }
   }
@@ -67,7 +68,7 @@ export class CandidateStore {
     } catch (error) {
       this.updateState({
         loading: false,
-        error: error instanceof Error ? error.message : 'Failed to create candidate'
+        error: this.extractErrorMessage(error, 'Failed to create candidate')
       });
       return null;
     }
@@ -79,6 +80,27 @@ export class CandidateStore {
 
   private updateState(partialState: Partial<CandidateState>): void {
     this.state.update(current => ({ ...current, ...partialState }));
+  }
+
+  private extractErrorMessage(error: unknown, defaultMessage: string): string {
+    if (error instanceof HttpErrorResponse) {
+      // Extract backend error message
+      if (error.error?.message) {
+        return error.error.message;
+      }
+      if (typeof error.error === 'string') {
+        return error.error;
+      }
+      if (error.message) {
+        return error.message;
+      }
+    }
+    
+    if (error instanceof Error) {
+      return error.message;
+    }
+    
+    return defaultMessage;
   }
 }
 

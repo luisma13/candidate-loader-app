@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CandidateFormComponent } from './features/candidate-form';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [CandidateFormComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
