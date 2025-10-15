@@ -56,8 +56,8 @@ export class CandidateStore {
       const newCandidate = await firstValueFrom(this.candidateService.create(request));
       
       if (newCandidate) {
-        // Add to existing candidates (incremental storage)
-        const updatedCandidates = [...this.state().candidates, newCandidate];
+        // Add to existing candidates (incremental storage, newest first)
+        const updatedCandidates = [newCandidate, ...this.state().candidates];
         this.updateState({ 
           candidates: updatedCandidates, 
           loading: false 
