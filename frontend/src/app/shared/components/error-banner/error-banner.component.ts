@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,5 +12,10 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ErrorBannerComponent {
   message = input<string | null>(null);
+  dismissed = output<void>();
+
+  onDismiss(): void {
+    this.dismissed.emit();
+  }
 }
 

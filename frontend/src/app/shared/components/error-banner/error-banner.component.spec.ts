@@ -85,5 +85,25 @@ describe('ErrorBannerComponent', () => {
     banner = fixture.nativeElement.querySelector('.error-banner');
     expect(banner).toBeFalsy();
   });
+
+  it('should emit dismissed event when close button is clicked', () => {
+    let dismissed = false;
+    fixture.componentRef.setInput('message', 'Error');
+    component.dismissed.subscribe(() => dismissed = true);
+    fixture.detectChanges();
+
+    const closeButton = fixture.nativeElement.querySelector('.close-button');
+    closeButton.click();
+
+    expect(dismissed).toBe(true);
+  });
+
+  it('should have close button with accessible label', () => {
+    fixture.componentRef.setInput('message', 'Error');
+    fixture.detectChanges();
+
+    const closeButton = fixture.nativeElement.querySelector('.close-button');
+    expect(closeButton.getAttribute('aria-label')).toBe('Close error');
+  });
 });
 

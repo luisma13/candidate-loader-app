@@ -128,6 +128,10 @@ export class CandidateFormComponent {
            validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
   }
 
+  clearCreateError(): void {
+    this.store.clearCreateError();
+  }
+
   getErrorMessage(fieldName: 'name' | 'surname'): string {
     const field = this.candidateForm.get(fieldName);
     

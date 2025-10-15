@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 
 import { CandidateStore } from '../../core/store/candidate.store';
-import { Candidate } from '../../core/models/candidate.model';
 import { ErrorBannerComponent } from '../../shared/components/error-banner/error-banner.component';
 
 @Component({
@@ -62,6 +61,10 @@ export class CandidateTableComponent implements OnInit {
 
   getAvailabilityClass(availability: boolean): string {
     return availability ? 'availability-yes' : 'availability-no';
+  }
+
+  clearLoadError(): void {
+    this.store.clearLoadError();
   }
 }
 

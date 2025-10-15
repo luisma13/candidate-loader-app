@@ -2,6 +2,9 @@
   <div class="error-banner">
     <mat-icon>error_outline</mat-icon>
     <span class="message">{{ message() }}</span>
+    <button mat-icon-button (click)="onDismiss()" class="close-button" aria-label="Close error">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 }
 

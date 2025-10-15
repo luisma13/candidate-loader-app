@@ -4,7 +4,7 @@
   </mat-card-header>
   <mat-card-content>
     <!-- Error banner (always on top if there's an error) -->
-    <app-error-banner [message]="error()" />
+    <app-error-banner [message]="error()" (dismissed)="clearLoadError()" />
 
     <!-- Loading state -->
     @if (isLoading()) {
