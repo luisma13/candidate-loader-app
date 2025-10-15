@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CandidateStore } from '../../core';
+import { ErrorBannerComponent } from '../../shared/components/error-banner/error-banner.component';
 
 @Component({
   selector: 'app-candidate-form',
@@ -20,7 +21,8 @@ import { CandidateStore } from '../../core';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    ErrorBannerComponent
   ],
   templateUrl: './candidate-form.component.html',
   styleUrl: './candidate-form.component.scss'
@@ -31,6 +33,7 @@ export class CandidateFormComponent {
   private readonly snackBar = inject(MatSnackBar);
 
   readonly loading = this.store.loading;
+  readonly createError = this.store.createError;
   readonly selectedFileName = signal<string | null>(null);
 
   readonly candidateForm = this.fb.nonNullable.group({
@@ -99,13 +102,8 @@ export class CandidateFormComponent {
         { duration: 3000, panelClass: ['success-snackbar'] }
       );
       this.resetForm();
-    } else if (this.store.error()) {
-      this.snackBar.open(
-        this.store.error() || 'Error creating candidate',
-        'Close',
-        { duration: 5000, panelClass: ['error-snackbar'] }
-      );
     }
+    // Error is shown in the banner, no need for snackbar
   }
 
   private resetForm(): void {

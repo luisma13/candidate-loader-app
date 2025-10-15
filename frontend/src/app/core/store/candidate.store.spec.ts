@@ -42,8 +42,12 @@ describe('CandidateStore', () => {
       expect(store.loading()).toBe(false);
     });
 
-    it('should have no error', () => {
-      expect(store.error()).toBeNull();
+    it('should have no load error', () => {
+      expect(store.loadError()).toBeNull();
+    });
+
+    it('should have no create error', () => {
+      expect(store.createError()).toBeNull();
     });
 
     it('should have candidateCount of 0', () => {
@@ -60,7 +64,7 @@ describe('CandidateStore', () => {
 
       expect(store.candidates()).toEqual(mockCandidates);
       expect(store.loading()).toBe(false);
-      expect(store.error()).toBeNull();
+      expect(store.loadError()).toBeNull();
       expect(store.candidateCount()).toBe(1);
     });
 
@@ -94,7 +98,7 @@ describe('CandidateStore', () => {
 
       expect(store.candidates()).toEqual([]);
       expect(store.loading()).toBe(false);
-      expect(store.error()).toBe('Network error');
+      expect(store.loadError()).toBe('Network error');
     });
 
     it('should handle unknown errors', async () => {
@@ -102,7 +106,7 @@ describe('CandidateStore', () => {
 
       await store.loadCandidates();
 
-      expect(store.error()).toBe('Failed to load candidates');
+      expect(store.loadError()).toBe('Failed to load candidates');
     });
   });
 
@@ -121,7 +125,7 @@ describe('CandidateStore', () => {
       expect(store.candidates()).toEqual([mockCandidate]);
       expect(store.candidateCount()).toBe(1);
       expect(store.loading()).toBe(false);
-      expect(store.error()).toBeNull();
+      expect(store.createError()).toBeNull();
     });
 
     it('should add candidate incrementally to existing list', async () => {
@@ -165,7 +169,7 @@ describe('CandidateStore', () => {
       expect(result).toBeNull();
       expect(store.candidates()).toEqual([]);
       expect(store.loading()).toBe(false);
-      expect(store.error()).toBe('Validation error');
+      expect(store.createError()).toBe('Validation error');
     });
 
     it('should extract error message from HttpErrorResponse with message', async () => {
@@ -184,7 +188,7 @@ describe('CandidateStore', () => {
       const result = await store.createCandidate(request);
 
       expect(result).toBeNull();
-      expect(store.error()).toBe('Missing required column(s): seniority');
+      expect(store.createError()).toBe('Missing required column(s): seniority');
     });
 
     it('should extract error message from HttpErrorResponse with string error', async () => {
@@ -203,7 +207,7 @@ describe('CandidateStore', () => {
       const result = await store.createCandidate(request);
 
       expect(result).toBeNull();
-      expect(store.error()).toBe('Invalid file format');
+      expect(store.createError()).toBe('Invalid file format');
     });
 
     it('should handle unknown errors when creating', async () => {
@@ -217,20 +221,38 @@ describe('CandidateStore', () => {
       const result = await store.createCandidate(request);
 
       expect(result).toBeNull();
-      expect(store.error()).toBe('Failed to create candidate');
+      expect(store.createError()).toBe('Failed to create candidate');
     });
   });
 
-  describe('clearError', () => {
-    it('should clear error state', async () => {
+  describe('clearLoadError', () => {
+    it('should clear load error state', async () => {
       const error = new Error('Test error');
       candidateService.getAll.and.returnValue(throwError(() => error));
 
       await store.loadCandidates();
-      expect(store.error()).toBe('Test error');
+      expect(store.loadError()).toBe('Test error');
 
-      store.clearError();
-      expect(store.error()).toBeNull();
+      store.clearLoadError();
+      expect(store.loadError()).toBeNull();
+    });
+  });
+
+  describe('clearCreateError', () => {
+    it('should clear create error state', async () => {
+      const error = new Error('Test error');
+      const request = {
+        name: 'Test',
+        surname: 'User',
+        file: new File(['test'], 'test.xlsx')
+      };
+      candidateService.create.and.returnValue(throwError(() => error));
+
+      await store.createCandidate(request);
+      expect(store.createError()).toBe('Test error');
+
+      store.clearCreateError();
+      expect(store.createError()).toBeNull();
     });
   });
 

@@ -7,13 +7,15 @@ import { CandidateService } from '../services';
 export interface CandidateState {
   candidates: Candidate[];
   loading: boolean;
-  error: string | null;
+  loadError: string | null;
+  createError: string | null;
 }
 
 const initialState: CandidateState = {
   candidates: [],
   loading: false,
-  error: null
+  loadError: null,
+  createError: null
 };
 
 @Injectable({
@@ -28,12 +30,13 @@ export class CandidateStore {
   // Selectors
   readonly candidates = computed(() => this.state().candidates);
   readonly loading = computed(() => this.state().loading);
-  readonly error = computed(() => this.state().error);
+  readonly loadError = computed(() => this.state().loadError);
+  readonly createError = computed(() => this.state().createError);
   readonly candidateCount = computed(() => this.state().candidates.length);
 
   // Actions
   async loadCandidates(): Promise<void> {
-    this.updateState({ loading: true, error: null });
+    this.updateState({ loading: true, loadError: null });
 
     try {
       const candidates = await firstValueFrom(this.candidateService.getAll());
@@ -41,13 +44,13 @@ export class CandidateStore {
     } catch (error) {
       this.updateState({
         loading: false,
-        error: this.extractErrorMessage(error, 'Failed to load candidates')
+        loadError: this.extractErrorMessage(error, 'Failed to load candidates')
       });
     }
   }
 
   async createCandidate(request: CreateCandidateRequest): Promise<Candidate | null> {
-    this.updateState({ loading: true, error: null });
+    this.updateState({ loading: true, createError: null });
 
     try {
       const newCandidate = await firstValueFrom(this.candidateService.create(request));
@@ -68,14 +71,18 @@ export class CandidateStore {
     } catch (error) {
       this.updateState({
         loading: false,
-        error: this.extractErrorMessage(error, 'Failed to create candidate')
+        createError: this.extractErrorMessage(error, 'Failed to create candidate')
       });
       return null;
     }
   }
 
-  clearError(): void {
-    this.updateState({ error: null });
+  clearLoadError(): void {
+    this.updateState({ loadError: null });
+  }
+
+  clearCreateError(): void {
+    this.updateState({ createError: null });
   }
 
   private updateState(partialState: Partial<CandidateState>): void {

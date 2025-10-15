@@ -1,6 +1,9 @@
 <div class="candidate-form-container">
   <h2 class="form-title">Add New Candidate</h2>
 
+  <!-- Error banner for creation errors -->
+  <app-error-banner [message]="createError()" />
+
   <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()" class="candidate-form">
     <!-- Name Field -->
     <mat-form-field appearance="outline">

@@ -30,7 +30,7 @@ export class CandidateTableComponent implements OnInit {
 
   readonly candidates = this.store.candidates;
   readonly isLoading = this.store.loading;
-  readonly error = this.store.error;
+  readonly error = this.store.loadError;
 
   readonly displayedColumns: string[] = [
     'name',
