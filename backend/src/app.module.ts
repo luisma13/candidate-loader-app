@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { CandidateEntity } from './candidate/infrastructure/persistence';
 import { CandidateModule } from './candidate/candidate.module';
 import { DomainExceptionFilter } from './candidate/infrastructure/http';
+import { AllExceptionsFilter } from './shared/http';
 
 @Module({
   imports: [
@@ -21,6 +22,10 @@ import { DomainExceptionFilter } from './candidate/infrastructure/http';
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
     {
       provide: APP_FILTER,
       useClass: DomainExceptionFilter,
